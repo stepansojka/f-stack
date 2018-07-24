@@ -17,7 +17,7 @@ X86_INCLUDES=0
 
 HOST_OS:=$(shell uname -s)
 
-#DEBUG=-O0 -gdwarf-2 -g3 -Wno-format-truncation
+#DEBUG=-O0 -gdwarf-2 -g3 
 
 #FF_KNI=1
 #FF_NETGRAPH=1
@@ -27,7 +27,7 @@ ifeq ($(FF_DPDK),)
     FF_DPDK=${TOPDIR}/dpdk/x86_64-native-linuxapp-gcc
 endif
 
-DPDK_CFLAGS= -Wall -Werror -include ${FF_DPDK}/include/rte_config.h
+DPDK_CFLAGS= -Wall -include ${FF_DPDK}/include/rte_config.h
 DPDK_CFLAGS+= -march=native -DRTE_MACHINE_CPUFLAG_SSE -DRTE_MACHINE_CPUFLAG_SSE2 -DRTE_MACHINE_CPUFLAG_SSE3
 DPDK_CFLAGS+= -DRTE_MACHINE_CPUFLAG_SSSE3 -DRTE_MACHINE_CPUFLAG_SSE4_1 -DRTE_MACHINE_CPUFLAG_SSE4_2
 DPDK_CFLAGS+= -DRTE_COMPILE_TIME_CPUFLAGS=RTE_CPUFLAG_SSE,RTE_CPUFLAG_SSE2,RTE_CPUFLAG_SSE3,RTE_CPUFLAG_SSSE3,RTE_CPUFLAG_SSE4_1,RTE_CPUFLAG_SSE4_2
@@ -43,7 +43,7 @@ INCLUDES+= -I./opt
 # Include search path for files that only include host OS headers
 HOST_INCLUDES= -I.
 ifndef DEBUG
-HOST_CFLAGS = -O2 -frename-registers  -funswitch-loops -fweb -Wno-format-truncation
+HOST_CFLAGS = -O2 -frename-registers  -funswitch-loops -fweb
 else
 HOST_CFLAGS = ${DEBUG} 
 endif
@@ -63,7 +63,7 @@ ifdef FF_IPFW
 HOST_CFLAGS+= -DFF_IPFW
 endif
 
-HOST_C= ${CC} -c $(HOST_CFLAGS) ${HOST_INCLUDES} ${WERROR} ${PROF} $<
+HOST_C= ${CC} -c $(HOST_CFLAGS) ${HOST_INCLUDES} ${PROF} $<
 
 
 ifneq ($(filter amd64 i386,${MACHINE_CPUARCH}),)
